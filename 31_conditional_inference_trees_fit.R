@@ -97,11 +97,6 @@ for(i in seq_along(lt)) {
     )
   }
 
-  # if there is only one year, remove year_index column
-  if(length(unique(di$year_y_avg)) == 1) {
-    di[, year_y_avg:= NULL]
-  }
-
   # remove columns with not enough data
   # 25 % is needed for a split. So at least there should be 50% of not NA values
   for(j in preds) {
