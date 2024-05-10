@@ -105,8 +105,8 @@ for(i in seq_along(lt)) {
   # remove columns with not enough data
   # 25 % is needed for a split. So at least there should be 50% of not NA values
   for(j in preds) {
-    j_NA_p <- sum(is.na(di[[j]])) # j_noneNA_p <- sum(!is.na(di[[j]])) ### TO BE FIX !!!!
-    if(j_NA_p > ctrl$minsplit) di[, (j):= NULL] # if(j_noneNA_p < ctrl$minsplit * 2) di[, (j):= NULL] ## TO BE FIX!!!!
+    j_NA_p <- sum(is.na(di[[j]])) 
+    if(j_NA_p > ctrl$minsplit) di[, (j):= NULL] 
   }
 
   # 8% is needed in a terminal node.
@@ -124,20 +124,6 @@ for(i in seq_along(lt)) {
     control = ctrl
   )
 
-  # if tree has no branches, inceas alpha and try again
-  nnode <- nodeids(lt[[i]]) |> length()
-
-  # some trees have no branches; change alpha
-  while(nnode == 1) {
-    ctrl$logmincriterion <- log(exp(ctrl$logmincr) - .05)
-
-    lt[[i]] <- ctree(
-      yield_kg_ha ~ .,
-      data = di,
-      control = ctrl
-    )
-    nnode <- nodeids(lt[[i]]) |> length()
-  }
   d[ii, cit_yhat:= predict(lt[[i]])]
 }
 
